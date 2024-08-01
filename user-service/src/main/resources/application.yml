@@ -4,15 +4,26 @@ server:
 spring:
   application:
     name: user-service
+  datasource:
+    url: jdbc:h2:mem:demo;
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
 
 eureka:
   instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}} # random port ???, ??? ???? ??? ???? ?????? ???? ??
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}} # random port 지정시, 대시보드에서 인스턴스를 구분하기 위함
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://127.0.0.1:8761/eureka # ??? ??? ??
+      defaultZone: http://127.0.0.1:8761/eureka # 등록할 유레카 서버
 
 greeting:
   message: Welcome to the Simple E-commerce.

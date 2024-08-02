@@ -8,4 +8,5 @@ import com.demo.user_service.entity.User;
 public interface UserService {
 	void createUser(UserDto userDto);
 	List<User> findAllUser();
+	User findUser(long userId);
 }

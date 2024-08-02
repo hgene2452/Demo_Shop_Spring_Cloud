@@ -30,4 +30,9 @@ public class UserServiceImpl implements UserService {
 	public List<User> findAllUser() {
 		return userRepository.findAll();
 	}
+
+	@Override
+	public User findUser(long userId) {
+		return userRepository.findById(userId).orElseThrow(IllegalAccessError::new);
+	}
 }

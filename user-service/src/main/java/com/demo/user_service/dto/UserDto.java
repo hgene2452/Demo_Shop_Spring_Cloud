@@ -3,6 +3,8 @@ package com.demo.user_service.dto;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.demo.user_service.entity.User;
 
 import lombok.Data;
@@ -20,8 +22,8 @@ public class UserDto {
 		this.userId = UUID.randomUUID().toString();
 	}
 
-	public void encryptPwd() {
-		this.encryptedPwd = this.pwd;
+	public void encryptPwd(PasswordEncoder passwordEncoder) {
+		this.encryptedPwd = passwordEncoder.encode(pwd);
 	}
 
 	public User toEntity() {

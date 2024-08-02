@@ -1,5 +1,7 @@
 package com.demo.user_service.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.user_service.dto.UserDto;
+import com.demo.user_service.entity.User;
 import com.demo.user_service.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,5 +39,10 @@ public class UserController {
 	public String createUser(@RequestBody UserDto userDto) {
 		userService.createUser(userDto);
 		return "Create user method is called";
+	}
+
+	@GetMapping("/users")
+	public List<User> findAllUser() {
+		return userService.findAllUser();
 	}
 }

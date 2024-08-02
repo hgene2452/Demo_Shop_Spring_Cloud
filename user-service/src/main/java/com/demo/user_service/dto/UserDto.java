@@ -34,4 +34,11 @@ public class UserDto {
 			.encryptedPwd(this.encryptedPwd)
 			.build();
 	}
+
+	public UserDto(String email, String name, String userId, String encryptedPwd) {
+		this.email = email;
+		this.name = name;
+		this.userId = userId;
+		this.encryptedPwd = encryptedPwd;
+	}
 }

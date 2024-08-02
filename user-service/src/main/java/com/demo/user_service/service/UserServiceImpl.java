@@ -6,7 +6,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.demo.user_service.dto.UserDto;
-import com.demo.user_service.entity.User;
 import com.demo.user_service.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -27,12 +26,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<User> findAllUser() {
-		return userRepository.findAll();
+	public List<UserDto> findAllUser() {
+		return userRepository.findAllUserDtoByUserId();
 	}
 
 	@Override
-	public User findUser(long userId) {
-		return userRepository.findById(userId).orElseThrow(IllegalAccessError::new);
+	public UserDto findUser(long userId) {
+		return userRepository.findUserDtoById(userId).orElseThrow(IllegalAccessError::new);
 	}
 }

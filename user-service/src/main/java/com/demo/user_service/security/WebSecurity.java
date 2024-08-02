@@ -17,7 +17,7 @@ public class WebSecurity {
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity
 			.csrf(CsrfConfigurer::disable)
-			.authorizeHttpRequests(authorize -> authorize.requestMatchers("/**").permitAll());
+			.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
 		return httpSecurity.build();
 	}
 

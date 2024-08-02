@@ -1,9 +1,12 @@
 package com.demo.user_service.controller;
 
+import static org.springframework.http.HttpStatus.*;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.user_service.dto.UserDto;
-import com.demo.user_service.entity.User;
 import com.demo.user_service.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,18 +41,20 @@ public class UserController {
 	}
 
 	@PostMapping("/users")
-	public String createUser(@RequestBody UserDto userDto) {
+	public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
 		userService.createUser(userDto);
-		return "Create user method is called";
+		return ResponseEntity.status(CREATED).build();
 	}
 
 	@GetMapping("/users")
-	public List<User> findAllUser() {
-		return userService.findAllUser();
+	public ResponseEntity<List<UserDto>> findAllUser() {
+		List<UserDto> userDtos = userService.findAllUser();
+		return ResponseEntity.ok(userDtos);
 	}
 
 	@GetMapping("/users/{userId}")
-	public User findUser(@PathVariable("userId") long userId) {
-		return userService.findUser(userId);
+	public ResponseEntity<UserDto> findUser(@PathVariable("userId") long userId) {
+		UserDto userDto = userService.findUser(userId);
+		return ResponseEntity.ok(userDto);
 	}
 }

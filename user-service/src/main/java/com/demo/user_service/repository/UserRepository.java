@@ -13,7 +13,7 @@ import com.demo.user_service.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	@Query("SELECT new com.demo.user_service.dto.UserDto(u.email, u.name, u.userId, u.encryptedPwd) "
 		+ "FROM User u")
-	List<UserDto> findAllUserDtoByUserId();
+	List<UserDto> findAllUserDto();
 
 	@Query("SELECT new com.demo.user_service.dto.UserDto(u.email, u.name, u.userId, u.encryptedPwd) "
 		+ "FROM User u "

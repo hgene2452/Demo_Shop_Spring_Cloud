@@ -1,6 +1,7 @@
 package com.demo.user_service.dto;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ public class UserDto {
 	private String userId;
 	private Date createdAt;
 	private String encryptedPwd;
+	private List<OrderDto> orderDtos;
 
 	public void createUserId() {
 		this.userId = UUID.randomUUID().toString();

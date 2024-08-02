@@ -21,17 +21,18 @@ public class UserServiceImpl implements UserService {
 	public void createUser(UserDto userDto) {
 		userDto.createUserId();
 		userDto.encryptPwd(passwordEncoder);
-
 		userRepository.save(userDto.toEntity());
 	}
 
 	@Override
 	public List<UserDto> findAllUser() {
-		return userRepository.findAllUserDtoByUserId();
+		return userRepository.findAllUserDto();
 	}
 
 	@Override
 	public UserDto findUser(long userId) {
-		return userRepository.findUserDtoById(userId).orElseThrow(IllegalAccessError::new);
+		UserDto userDto = userRepository.findUserDtoById(userId).orElseThrow(IllegalAccessError::new);
+		// userDto.setOrderDtos();
+		return userDto;
 	}
 }

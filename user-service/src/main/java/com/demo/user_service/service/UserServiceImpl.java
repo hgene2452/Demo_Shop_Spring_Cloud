@@ -16,6 +16,7 @@ import com.demo.user_service.data.dto.TokenDto;
 import com.demo.user_service.data.dto.UserDto;
 import com.demo.user_service.data.entity.User;
 import com.demo.user_service.global.exception.category.NotFoundException;
+import com.demo.user_service.global.exception.category.UnAuthorizedException;
 import com.demo.user_service.global.exception.data.ErrorCode;
 import com.demo.user_service.repository.UserRepository;
 
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
 			.orElseThrow(() -> new NotFoundException("", ErrorCode.UNDEFINED_USER));
 
 		if (!user.passwordMatches(passwordEncoder, loginDto.getPassword())) {
-			throw new IllegalArgumentException();
+			throw new UnAuthorizedException("UserServiceImpl.login", ErrorCode.FORBIDDEN_USER);
 		}
 
 		String accessToken = createAccessToken(user.getId());

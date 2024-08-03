@@ -16,6 +16,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import com.demo.user_service.global.exception.category.UnAuthorizedException;
+import com.demo.user_service.global.exception.data.ErrorCode;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtBuilder;
@@ -78,7 +81,7 @@ public class JwtTokenProvider {
 	public Authentication getAuthentication(String accessToken) {
 		Claims claims = parseClaims(accessToken);
 		if (claims.get("auth") == null) {
-			throw new IllegalArgumentException();
+			throw new UnAuthorizedException("JwtTokenProvider.getAuthentication", ErrorCode.FORBIDDEN_USER);
 		}
 
 		String id = String.valueOf(claims.get("id"));

@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 	// USER
+	FORBIDDEN_USER(403, "권한이 없는 서비스입니다."),
 	UNDEFINED_USER(404, "회원을 찾을 수 없습니다.");
 
 	private final int status;

@@ -1,6 +1,6 @@
-package com.demo.user_service.exception.category;
+package com.demo.user_service.global.exception.category;
 
-import com.demo.user_service.exception.data.ErrorCode;
+import com.demo.user_service.global.exception.data.ErrorCode;
 
 import lombok.Getter;
 

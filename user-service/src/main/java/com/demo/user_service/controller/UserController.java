@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.user_service.dto.UserDto;
+import com.demo.user_service.data.dto.LoginDto;
+import com.demo.user_service.data.dto.TokenDto;
+import com.demo.user_service.data.dto.UserDto;
 import com.demo.user_service.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -54,5 +56,11 @@ public class UserController {
 	public ResponseEntity<UserDto> findUser(@PathVariable("userId") long userId) {
 		UserDto userDto = userService.findUser(userId);
 		return ResponseEntity.ok(userDto);
+	}
+
+	@PostMapping("/users/login")
+	public ResponseEntity<TokenDto> login(@RequestBody LoginDto loginDto) {
+		TokenDto tokenDto = userService.login(loginDto);
+		return ResponseEntity.ok(tokenDto);
 	}
 }

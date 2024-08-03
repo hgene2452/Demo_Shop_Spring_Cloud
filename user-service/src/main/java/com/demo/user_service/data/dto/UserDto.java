@@ -1,4 +1,4 @@
-package com.demo.user_service.dto;
+package com.demo.user_service.data.dto;
 
 import java.util.Date;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.demo.user_service.entity.User;
+import com.demo.user_service.data.entity.User;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.demo.user_service.entity;
+package com.demo.user_service.data.entity;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

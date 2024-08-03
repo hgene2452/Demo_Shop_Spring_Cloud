@@ -1,4 +1,4 @@
-package com.demo.user_service.exception.data;
+package com.demo.user_service.global.exception.data;
 
 import lombok.Getter;
 

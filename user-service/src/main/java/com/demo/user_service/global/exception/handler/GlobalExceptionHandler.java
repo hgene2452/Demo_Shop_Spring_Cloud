@@ -1,14 +1,14 @@
-package com.demo.user_service.exception.handler;
+package com.demo.user_service.global.exception.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.demo.user_service.exception.category.BusinessRuntimeException;
-import com.demo.user_service.exception.category.ExternalServerException;
-import com.demo.user_service.exception.category.NotFoundException;
-import com.demo.user_service.exception.data.ErrorResponse;
+import com.demo.user_service.global.exception.category.BusinessRuntimeException;
+import com.demo.user_service.global.exception.category.ExternalServerException;
+import com.demo.user_service.global.exception.category.NotFoundException;
+import com.demo.user_service.global.exception.data.ErrorResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

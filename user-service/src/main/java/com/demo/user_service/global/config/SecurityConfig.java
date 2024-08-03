@@ -29,7 +29,7 @@ public class SecurityConfig {
 			.httpBasic(HttpBasicConfigurer::disable)
 			.csrf(CsrfConfigurer::disable)
 			.authorizeHttpRequests(authrize -> {
-				authrize.requestMatchers("/users/login", "/users").permitAll();
+				authrize.requestMatchers("/login", "/users").permitAll();
 				authrize.anyRequest().authenticated();
 			})
 			.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

@@ -14,14 +14,16 @@ spring:
   cloud:
     gateway:
       routes:
+          # ???
         - id: user-service
-          uri: lb://USER-SERVICE # ????? ??? ??? ????? ?????
+          uri: lb://USER-SERVICE # URI REWRITE: ????? ??? ??? ????? ?????
           predicates:
             - Path=/user-service/login
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+          # ????
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
@@ -30,20 +32,14 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+          # user-service ???
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/user-service/users
+            - Path=/user-service/**
             - Method=GET
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/user-service/users/login
-            - Method=POST
-          filters:
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
         - id: catalog-service
           uri: lb://CATALOG-SERVICE

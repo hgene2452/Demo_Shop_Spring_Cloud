@@ -1,5 +1,7 @@
 package com.demo.user_service.entity;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,5 +39,9 @@ public class User {
 		this.name = name;
 		this.userId = userId;
 		this.encryptedPwd = encryptedPwd;
+	}
+
+	public boolean passwordMatches(PasswordEncoder passwordEncoder, String rawPassword) {
+		return passwordEncoder.matches(rawPassword, encryptedPwd);
 	}
 }

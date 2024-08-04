@@ -13,7 +13,6 @@ import org.springframework.web.server.ServerWebExchange;
 import com.demo.gateway_service.provider.JwtTokenProvider;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
@@ -64,6 +63,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 		return response.setComplete();
 	}
 
+	// Header.Jwt 토큰의 subject(user key)와 유저의 요청에 담긴 유저키 값 비교 등의 인증 로직 추가 가능
 	private boolean isJwtValid(String jwt) {
 		boolean returnValue = true;
 		Claims subject = jwtTokenProvider.parseClaims(jwt);

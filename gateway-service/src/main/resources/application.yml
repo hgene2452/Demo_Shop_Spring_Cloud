@@ -51,5 +51,11 @@ spring:
           predicates:
             - Path=/order-service/**
 
-jwt:
-  secret: happydayhappydayhappydayhappydayhappydayhappydayhappydayhappydayhappyday
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace
+
+#jwt:
+#  secret: happydayhappydayhappydayhappydayhappydayhappydayhappydayhappydayhappyday

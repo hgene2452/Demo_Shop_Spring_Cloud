@@ -34,5 +34,5 @@ eureka:
 greeting:
   message: Welcome to the Simple E-commerce.
 
-jwt:
-  secret: happydayhappydayhappydayhappydayhappydayhappydayhappydayhappydayhappyday
+#jwt:
+#  secret: happydayhappydayhappydayhappydayhappydayhappydayhappydayhappydayhappyday

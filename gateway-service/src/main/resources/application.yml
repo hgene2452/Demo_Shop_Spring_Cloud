@@ -51,5 +51,5 @@ spring:
           predicates:
             - Path=/order-service/**
 
-#jwt:
-#  secret: happydayhappydayhappydayhappydayhappydayhappydayhappydayhappydayhappyday
+jwt:
+  secret: happydayhappydayhappydayhappydayhappydayhappydayhappydayhappydayhappyday

@@ -10,3 +10,7 @@ jwt:
 
 order_service:
   url: http://order-service/order-service/%s/orders
+
+logging:
+  level:
+    com.demo.user_service.clients: DEBUG

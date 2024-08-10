@@ -59,22 +59,28 @@ public class UserServiceImpl implements UserService {
 		UserDto userDto = userRepository.findUserDtoByUserId(userId).orElseThrow(() -> new NotFoundException("UserServiceImpl.findUser", ErrorCode.UNDEFINED_USER));
 
 		/*
-			[restTemplate 방식을 통해 order-service로부터 데이터 받아오기]
+		[restTemplate 방식을 통해 order-service로부터 데이터 받아오기]
 
-			String orderUrl = String.format(env.getProperty("order_service.url"), userId);
-			ResponseEntity<List<OrderDto>> orderDtoResp = restTemplate.exchange(
-				orderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<OrderDto>>() {}
-			);
-			List<OrderDto> orderDtoList = orderDtoResp.getBody();
+		String orderUrl = String.format(env.getProperty("order_service.url"), userId);
+		ResponseEntity<List<OrderDto>> orderDtoResp = restTemplate.exchange(
+			orderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<OrderDto>>() {}
+		);
+		List<OrderDto> orderDtoList = orderDtoResp.getBody();
 		 */
 
-		/* openFeign 방식을 통해 order-service로부터 데이터 받아오기 */
+		/*
+		[try~catch문을 사용하는 openFeign 방식을 통해 order-service로부터 데이터 받아오기]
+
 		List<OrderDto> orderDtoList = null;
 		try {
 			orderDtoList = orderServiceClient.getOrders(userId);
 		} catch (FeignException e) {
 			throw new FeignCommunicationException("UserServiceImpl.findUser", ErrorCode.FEIGN_COMMUNICATION);
 		}
+		 */
+
+		/* ErrorDecoder를 사용하는 openFeign 방식을 통해 order-service로부터 데이터 받아오기 */
+		List<OrderDto> orderDtoList = orderServiceClient.getOrders(userId);
 		userDto.setOrderDtos(orderDtoList);
 
 		return userDto;

@@ -36,7 +36,7 @@ public class Order implements Serializable {
 	@Column(nullable = false)
 	private Integer totalPrice;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String userId;
 
 	@Column(nullable = false, unique = true)

@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto findUser(long userId) {
-		UserDto userDto = userRepository.findUserDtoById(userId).orElseThrow(() -> new NotFoundException("UserServiceImpl.findUser", ErrorCode.UNDEFINED_USER));
+	public UserDto findUser(String userId) {
+		UserDto userDto = userRepository.findUserDtoByUserId(userId).orElseThrow(() -> new NotFoundException("UserServiceImpl.findUser", ErrorCode.UNDEFINED_USER));
 
 		// restTemplate 방식을 통해 order-service로부터 데이터 받아오기 시작
 		String orderUrl = String.format(env.getProperty("order_service.url"), userId);

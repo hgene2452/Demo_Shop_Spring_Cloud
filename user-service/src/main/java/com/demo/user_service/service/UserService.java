@@ -9,6 +9,6 @@ import com.demo.user_service.data.dto.UserDto;
 public interface UserService {
 	void createUser(UserDto userDto);
 	List<UserDto> findAllUser();
-	UserDto findUser(long userId);
+	UserDto findUser(String userId);
 	TokenDto login(LoginDto loginDto);
 }

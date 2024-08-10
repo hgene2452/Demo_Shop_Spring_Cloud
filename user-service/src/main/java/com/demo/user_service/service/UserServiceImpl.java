@@ -4,14 +4,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.demo.user_service.auth.JwtTokenProvider;
 import com.demo.user_service.data.dto.LoginDto;
+import com.demo.user_service.data.dto.OrderDto;
 import com.demo.user_service.data.dto.TokenDto;
 import com.demo.user_service.data.dto.UserDto;
 import com.demo.user_service.data.entity.User;
@@ -29,6 +35,8 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final Environment env;
+	private final RestTemplate restTemplate;
 
 	@Override
 	public void createUser(UserDto userDto) {
@@ -45,7 +53,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto findUser(long userId) {
 		UserDto userDto = userRepository.findUserDtoById(userId).orElseThrow(() -> new NotFoundException("UserServiceImpl.findUser", ErrorCode.UNDEFINED_USER));
-		// userDto.setOrderDtos();
+
+		// restTemplate 방식을 통해 order-service로부터 데이터 받아오기 시작
+		String orderUrl = String.format(env.getProperty("order_service.url"), userId);
+		ResponseEntity<List<OrderDto>> orderDtoResp = restTemplate.exchange(
+			orderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<OrderDto>>() {}
+		);
+		List<OrderDto> orderDtoList = orderDtoResp.getBody();
+		userDto.setOrderDtos(orderDtoList);
+		// restTemplate 방식을 통해 order-service로부터 데이터 받아오기 끝
+
 		return userDto;
 	}
 

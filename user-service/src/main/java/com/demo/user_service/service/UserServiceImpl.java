@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.demo.user_service.auth.JwtTokenProvider;
+import com.demo.user_service.clients.OrderServiceClient;
 import com.demo.user_service.data.dto.LoginDto;
 import com.demo.user_service.data.dto.OrderDto;
 import com.demo.user_service.data.dto.TokenDto;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final OrderServiceClient orderServiceClient;
 	private final Environment env;
 	private final RestTemplate restTemplate;
 
@@ -54,14 +56,19 @@ public class UserServiceImpl implements UserService {
 	public UserDto findUser(String userId) {
 		UserDto userDto = userRepository.findUserDtoByUserId(userId).orElseThrow(() -> new NotFoundException("UserServiceImpl.findUser", ErrorCode.UNDEFINED_USER));
 
-		// restTemplate 방식을 통해 order-service로부터 데이터 받아오기 시작
-		String orderUrl = String.format(env.getProperty("order_service.url"), userId);
-		ResponseEntity<List<OrderDto>> orderDtoResp = restTemplate.exchange(
-			orderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<OrderDto>>() {}
-		);
-		List<OrderDto> orderDtoList = orderDtoResp.getBody();
+		/*
+			[restTemplate 방식을 통해 order-service로부터 데이터 받아오기]
+
+			String orderUrl = String.format(env.getProperty("order_service.url"), userId);
+			ResponseEntity<List<OrderDto>> orderDtoResp = restTemplate.exchange(
+				orderUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<OrderDto>>() {}
+			);
+			List<OrderDto> orderDtoList = orderDtoResp.getBody();
+		 */
+
+		/* openFeign 방식을 통해 order-service로부터 데이터 받아오기 */
+		List<OrderDto> orderDtoList = orderServiceClient.getOrders(userId);
 		userDto.setOrderDtos(orderDtoList);
-		// restTemplate 방식을 통해 order-service로부터 데이터 받아오기 끝
 
 		return userDto;
 	}

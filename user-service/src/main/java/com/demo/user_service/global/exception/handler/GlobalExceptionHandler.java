@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.demo.user_service.global.exception.category.BusinessRuntimeException;
 import com.demo.user_service.global.exception.category.ExternalServerException;
+import com.demo.user_service.global.exception.category.FeignCommunicationException;
 import com.demo.user_service.global.exception.category.NotFoundException;
 import com.demo.user_service.global.exception.data.ErrorResponse;
 
@@ -28,6 +29,20 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(NotFoundException.class)
 	public ErrorResponse notFoundCustomHandler(BusinessRuntimeException exception) {
+		log.error(exception.getMessageKey(), exception, exception.getParams());
+		return new ErrorResponse(exception.getErrorCode());
+	}
+
+	/**
+	 * 400 에러
+	 * 리소스 없음 에러 핸들러
+	 *
+	 * @param exception
+	 * @return
+	 */
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(FeignCommunicationException.class)
+	public ErrorResponse feignCommunicationCustomHandler(BusinessRuntimeException exception) {
 		log.error(exception.getMessageKey(), exception, exception.getParams());
 		return new ErrorResponse(exception.getErrorCode());
 	}

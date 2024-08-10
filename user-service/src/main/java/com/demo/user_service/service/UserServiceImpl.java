@@ -69,12 +69,13 @@ public class UserServiceImpl implements UserService {
 		 */
 
 		/* openFeign 방식을 통해 order-service로부터 데이터 받아오기 */
+		List<OrderDto> orderDtoList = null;
 		try {
-			List<OrderDto> orderDtoList = orderServiceClient.getOrders(userId);
-			userDto.setOrderDtos(orderDtoList);
+			orderDtoList = orderServiceClient.getOrders(userId);
 		} catch (FeignException e) {
 			throw new FeignCommunicationException("UserServiceImpl.findUser", ErrorCode.FEIGN_COMMUNICATION);
 		}
+		userDto.setOrderDtos(orderDtoList);
 
 		return userDto;
 	}

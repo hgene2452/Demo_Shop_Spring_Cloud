@@ -22,11 +22,13 @@ import com.demo.user_service.data.dto.OrderDto;
 import com.demo.user_service.data.dto.TokenDto;
 import com.demo.user_service.data.dto.UserDto;
 import com.demo.user_service.data.entity.User;
+import com.demo.user_service.global.exception.category.FeignCommunicationException;
 import com.demo.user_service.global.exception.category.NotFoundException;
 import com.demo.user_service.global.exception.category.UnAuthorizedException;
 import com.demo.user_service.global.exception.data.ErrorCode;
 import com.demo.user_service.repository.UserRepository;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -67,8 +69,12 @@ public class UserServiceImpl implements UserService {
 		 */
 
 		/* openFeign 방식을 통해 order-service로부터 데이터 받아오기 */
-		List<OrderDto> orderDtoList = orderServiceClient.getOrders(userId);
-		userDto.setOrderDtos(orderDtoList);
+		try {
+			List<OrderDto> orderDtoList = orderServiceClient.getOrders(userId);
+			userDto.setOrderDtos(orderDtoList);
+		} catch (FeignException e) {
+			throw new FeignCommunicationException("UserServiceImpl.findUser", ErrorCode.FEIGN_COMMUNICATION);
+		}
 
 		return userDto;
 	}
@@ -76,7 +82,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public TokenDto login(LoginDto loginDto) {
 		User user = userRepository.findByEmail(loginDto.getEmail())
-			.orElseThrow(() -> new NotFoundException("", ErrorCode.UNDEFINED_USER));
+			.orElseThrow(() -> new NotFoundException("UserServiceImpl.login", ErrorCode.UNDEFINED_USER));
 
 		if (!user.passwordMatches(passwordEncoder, loginDto.getPassword())) {
 			throw new UnAuthorizedException("UserServiceImpl.login", ErrorCode.FORBIDDEN_USER);

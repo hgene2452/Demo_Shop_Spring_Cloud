@@ -23,7 +23,7 @@ public class KafkaConsumer {
 
 	private final CatalogRepository catalogRepository;
 
-	@KafkaListener(topics = "example-order-topic")
+	@KafkaListener(topics = "example-catalog-topic")
 	public void processMessage(String kafkaMessage) {
 		log.info("Kafka Message: " + kafkaMessage);
 

@@ -15,12 +15,16 @@ import lombok.RequiredArgsConstructor;
 public class OrderServiceImpl implements OrderService {
 
 	private final OrderRepository orderRepository;
+	private final KafkaProducer kafkaProducer;
 
 	@Override
 	public void createOrder(OrderDto orderDto, String userId) {
 		orderDto.setOrderId(UUID.randomUUID().toString());
 		orderDto.setTotalPrice(orderDto.getQty() * orderDto.getUnitPrice());
 		orderDto.setUserId(userId);
+
+		// Kafka를 통해 데이터 동기화
+		kafkaProducer.send("example-order-topic", orderDto)
 
 		orderRepository.save(orderDto.toEntity());
 	}

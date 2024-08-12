@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "order")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order implements Serializable {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)

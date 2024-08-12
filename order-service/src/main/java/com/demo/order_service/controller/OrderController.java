@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.order_service.dto.OrderDto;
+import com.demo.order_service.service.KafkaProducer;
 import com.demo.order_service.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,15 @@ import lombok.RequiredArgsConstructor;
 public class OrderController {
 
 	private final OrderService orderService;
+	private final KafkaProducer kafkaProducer;
 
 	@PostMapping("/{userId}/orders")
 	public ResponseEntity<Void> createOrder(@RequestBody OrderDto orderDto, @PathVariable("userId") String userId) {
 		orderService.createOrder(orderDto, userId);
+
+		// kafka를 통해 주문내역 전달
+		kafkaProducer.send("example-catalog-topic", orderDto);
+
 		return ResponseEntity.status(CREATED).build();
 	}
 

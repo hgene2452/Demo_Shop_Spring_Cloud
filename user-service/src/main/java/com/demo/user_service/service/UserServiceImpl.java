@@ -1,9 +1,12 @@
 package com.demo.user_service.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -39,6 +42,7 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final OrderServiceClient orderServiceClient;
+	private final CircuitBreakerFactory circuitBreakerFactory;
 	private final Environment env;
 	private final RestTemplate restTemplate;
 
@@ -79,8 +83,15 @@ public class UserServiceImpl implements UserService {
 		}
 		 */
 
-		/* ErrorDecoder를 사용하는 openFeign 방식을 통해 order-service로부터 데이터 받아오기 */
+		/*
+		ErrorDecoder를 사용하는 openFeign 방식을 통해 order-service로부터 데이터 받아오기
+
 		List<OrderDto> orderDtoList = orderServiceClient.getOrders(userId);
+		 */
+
+		/* CircuitBreaker */
+		CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker");
+		List<OrderDto> orderDtoList = circuitBreaker.run(() -> orderServiceClient.getOrders(userId), throwable -> new ArrayList<>());
 		userDto.setOrderDtos(orderDtoList);
 
 		return userDto;

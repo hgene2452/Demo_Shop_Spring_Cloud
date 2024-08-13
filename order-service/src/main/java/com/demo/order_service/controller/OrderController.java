@@ -3,6 +3,7 @@ package com.demo.order_service.controller;
 import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.order_service.dto.OrderDto;
 import com.demo.order_service.service.KafkaProducer;
+import com.demo.order_service.service.OrderProducer;
 import com.demo.order_service.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,13 +27,22 @@ public class OrderController {
 
 	private final OrderService orderService;
 	private final KafkaProducer kafkaProducer;
+	private final OrderProducer orderProducer;
 
 	@PostMapping("/{userId}/orders")
 	public ResponseEntity<Void> createOrder(@RequestBody OrderDto orderDto, @PathVariable("userId") String userId) {
+		/*
+		[jpa]
 		orderService.createOrder(orderDto, userId);
+		*/
 
-		// kafka를 통해 주문내역 전달
+		/*
+		[kafka]
+		*/
+		orderDto.setOrderId(UUID.randomUUID().toString());
+		orderDto.setTotalPrice(orderDto.getQty() * orderDto.getUnitPrice());
 		kafkaProducer.send("example-catalog-topic", orderDto);
+		orderProducer.send("orders", orderDto);
 
 		return ResponseEntity.status(CREATED).build();
 	}

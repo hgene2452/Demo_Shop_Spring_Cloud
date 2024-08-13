@@ -33,7 +33,9 @@ import com.demo.user_service.repository.UserRepository;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -90,9 +92,11 @@ public class UserServiceImpl implements UserService {
 		 */
 
 		/* CircuitBreaker */
+		log.info("Before call orders microservice");
 		CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker");
 		List<OrderDto> orderDtoList = circuitBreaker.run(() -> orderServiceClient.getOrders(userId), throwable -> new ArrayList<>());
 		userDto.setOrderDtos(orderDtoList);
+		log.info("After called orders microservice");
 
 		return userDto;
 	}
